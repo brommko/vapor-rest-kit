@@ -11,7 +11,7 @@ import Vapor
 //MARK:- QueryBuilder Extension
 
 extension QueryBuilder where Model.IDValue: LosslessStringConvertible {
-    func getIdParameter(_ idKey: String, from req: Request) throws -> Model.IDValue {
+    func getIdParameter(_ idKey: String, from req: Request) async throw -> Model.IDValue {
         guard let id = req.parameters.get(idKey, as: Model.IDValue.self) else {
             throw Abort(.badRequest)
         }
@@ -19,7 +19,7 @@ extension QueryBuilder where Model.IDValue: LosslessStringConvertible {
         return id
     }
 
-    func find(by idKey: String, from req: Request) throws -> EventLoopFuture<Model> {
+    func find(by idKey: String, from req: Request) async throw -> Model {
         let id = try getIdParameter(idKey, from: req)
     
         return self.filter(\._$id == id)

@@ -10,11 +10,11 @@ import Fluent
 
 public extension ResourceController {
     func read<Model>(req: Request,
-                      queryModifier: QueryModifier<Model> = .empty) throws -> EventLoopFuture<Output>
+                      queryModifier: QueryModifier<Model> = .empty) async throws -> Output
     where
         Output.Model == Model {
 
-        try Model
+        try await Model
             .findByIdKey(req, database: req.db, queryModifier: queryModifier)
             .flatMapThrowing { model in try Output(model, req: req) }
     }
@@ -25,7 +25,7 @@ public extension RelatedResourceController {
         resolver: ChildResolver<Model, RelatedModel> = .byIdKeys,
         req: Request,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) async throw -> Output
     where
         Model == Output.Model {
 
@@ -38,7 +38,7 @@ public extension RelatedResourceController {
         resolver: ParentResolver<Model, RelatedModel> = .byIdKeys,
         req: Request,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) async throw -> Output
     where
         Model == Output.Model {
 
@@ -51,7 +51,7 @@ public extension RelatedResourceController {
         resolver: SiblingsResolver<Model, RelatedModel, Through> = .byIdKeys,
         req: Request,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) throws -> EventLoopFuture<Output>
+        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) async throw -> Output
     where
         Model == Output.Model {
 

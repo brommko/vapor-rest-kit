@@ -14,11 +14,11 @@ public protocol ResourceMutationModel: Content, Validatable where Model: Fields 
 
     func mutate(_: Model) throws -> Model
 
-    func mutate(_ model: Model, req: Request, database: Database) -> EventLoopFuture<Model>
+    func mutate(_ model: Model, req: Request, database: Database) -> Model
 }
 
 public extension ResourceMutationModel {
-    func mutate(_ model: Model, req: Request, database: Database) -> EventLoopFuture<Model> {
+    func mutate(_ model: Model, req: Request, database: Database) -> Model {
         return req.eventLoop.tryFuture { try mutate(model) }
     }
 }

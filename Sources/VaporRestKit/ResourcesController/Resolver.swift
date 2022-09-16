@@ -18,7 +18,7 @@ where
     let find: (_ req: Request,
                _ db: Database,
                _ keyPath: ChildrenKeyPath<RelatedModel, Model>,
-               _ queryModifier: QueryModifier<Model>) throws -> EventLoopFuture<(Model, RelatedModel)>
+               _ queryModifier: QueryModifier<Model>) async throw -> (Model, RelatedModel)
 }
 
 public extension ChildResolver {
@@ -41,7 +41,7 @@ where
     let find: (_ req: Request,
                _ db: Database,
                _ keyPath: ChildrenKeyPath<Model, RelatedModel>,
-               _ queryModifier: QueryModifier<Model>) throws -> EventLoopFuture<(Model, RelatedModel)>
+               _ queryModifier: QueryModifier<Model>) async throw -> (Model, RelatedModel)
 }
 
 public extension ParentResolver {
@@ -66,7 +66,7 @@ where
     let find: (_ req: Request,
                _ db: Database,
                _ keyPath: SiblingKeyPath<RelatedModel, Model, Through>,
-               _ queryModifier: QueryModifier<Model>) throws -> EventLoopFuture<(Model, RelatedModel)>
+               _ queryModifier: QueryModifier<Model>) async throw -> (Model, RelatedModel)
 }
 
 public extension SiblingsResolver {
@@ -84,7 +84,7 @@ public struct Resolver<Model> where Model: Fluent.Model,
                              Model.IDValue: LosslessStringConvertible {
 
     let find: (_ req: Request,
-               _ db: Database) throws -> EventLoopFuture<Model>
+               _ db: Database) async throw -> Model
 }
 
 public extension Resolver {

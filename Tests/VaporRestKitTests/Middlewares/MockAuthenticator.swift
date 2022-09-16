@@ -11,7 +11,7 @@ import Fluent
 struct MockAuthenticator<AuthModel>: RequestAuthenticator where AuthModel: Fluent.Model, AuthModel: Authenticatable {
     let userId: AuthModel.IDValue
 
-    func authenticate(request: Request) -> EventLoopFuture<Void> {
+    func authenticate(request: Request) async throw {
         return AuthModel.find(userId, on: request.db)
                         .map { authModel in
                             guard let model = authModel else {

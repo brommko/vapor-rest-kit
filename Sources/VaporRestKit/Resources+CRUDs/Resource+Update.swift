@@ -13,7 +13,7 @@ public extension ResourceController {
     func update<Input, Model>(
         req: Request,
         using: Input.Type,
-        queryModifier: QueryModifier<Model> = .empty) throws -> EventLoopFuture<Output>
+        queryModifier: QueryModifier<Model> = .empty) async throw -> Output
     where
         Input: ResourceUpdateModel,
         Output.Model == Model,
@@ -31,7 +31,7 @@ public extension RelatedResourceController {
         using: Input.Type,
         willSave middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) async throw -> Output
     where
         Input: ResourceUpdateModel,
         Model == Output.Model,
@@ -51,7 +51,7 @@ public extension RelatedResourceController {
         using: Input.Type,
         willSave middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) async throw -> Output
     where
         Input: ResourceUpdateModel,
         Model == Output.Model,
@@ -71,7 +71,7 @@ public extension RelatedResourceController {
         using: Input.Type,
         willSave middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) throws -> EventLoopFuture<Output>
+        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) async throw -> Output
     where        
         Input: ResourceUpdateModel,
         Model == Output.Model,

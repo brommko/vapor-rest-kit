@@ -39,7 +39,7 @@ final class ReferralCode: Model, Content {
 //MARK:- InitMigratableSchema
 
 extension ReferralCode: InitMigratableSchema {
-    static func prepare(on schemaBuilder: SchemaBuilder) -> EventLoopFuture<Void> {
+    static func prepare(on schemaBuilder: SchemaBuilder) async throw {
         return schemaBuilder
             .field(.id, .int, .identifier(auto: true))
             .field(Fields.code.key, .string, .required)

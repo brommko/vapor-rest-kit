@@ -12,7 +12,7 @@ import Fluent
 public typealias RelatedResourceControllerMiddleware = ControllerMiddleware
 
 public struct ControllerMiddleware<Model: Fluent.Model, RelatedModel: Fluent.Model> {
-    public typealias Handler = (Model, RelatedModel, Request, Database) -> EventLoopFuture<(Model, RelatedModel)>
+    public typealias Handler = (Model, RelatedModel, Request, Database) -> (Model, RelatedModel)
 
     fileprivate let handler: Handler
 
@@ -23,7 +23,7 @@ public struct ControllerMiddleware<Model: Fluent.Model, RelatedModel: Fluent.Mod
     func handle(_ model: Model,
                 relatedModel: RelatedModel,
                 req: Request,
-                database: Database) -> EventLoopFuture<(Model, RelatedModel)> {
+                database: Database) -> (Model, RelatedModel) {
 
         handler(model, relatedModel, req, database)
     }

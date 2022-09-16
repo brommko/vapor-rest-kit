@@ -12,7 +12,7 @@ import Fluent
 public extension ResourceController {
     func create<Input, Model>(
         req: Request,
-        using: Input.Type) throws -> EventLoopFuture<Output>
+        using: Input.Type) async throw -> Output
     where
         Input: ResourceUpdateModel,
         Output.Model == Model,
@@ -36,7 +36,7 @@ public extension RelatedResourceController {
         req: Request,
         using: Input.Type,
         willAttach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
-        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) async throw -> Output
     where
         Input: ResourceUpdateModel,
         Model == Output.Model,
@@ -64,7 +64,7 @@ public extension RelatedResourceController {
         req: Request,
         using: Input.Type,
         willAttach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
-        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) async throw -> Output
     where
         Input: ResourceUpdateModel,
         Model == Output.Model,
@@ -96,7 +96,7 @@ public extension RelatedResourceController {
         req: Request,
         using: Input.Type,
         willAttach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
-        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) throws -> EventLoopFuture<Output>
+        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) async throw -> Output
     where
         Input: ResourceUpdateModel,
         Model == Output.Model,

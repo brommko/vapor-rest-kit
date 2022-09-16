@@ -9,8 +9,8 @@ import Fluent
 import Vapor
 
 extension Database {
-    func tryTransaction<T>(_ closure: @escaping (Database) throws -> EventLoopFuture<T>) -> EventLoopFuture<T> {
-        transaction { (db) -> EventLoopFuture<T> in
+    func tryTransaction<T>(_ closure: @escaping (Database) async throw -> T) -> T {
+        transaction { (db) -> T in
             db.context.eventLoop
                 .tryFuture { try closure(db) }
                 .flatMap { $0 }

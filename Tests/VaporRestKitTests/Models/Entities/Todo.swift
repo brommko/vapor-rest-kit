@@ -61,7 +61,7 @@ final class Todo: Model, Content {
 //MARK:- InitMigratableSchema
 
 extension Todo: InitMigratableSchema {
-    static func prepare(on schemaBuilder: SchemaBuilder) -> EventLoopFuture<Void> {
+    static func prepare(on schemaBuilder: SchemaBuilder) async throw {
         return schemaBuilder
             .field(.id, .int, .identifier(auto: true))
             .field(Fields.title.key, .string, .required)

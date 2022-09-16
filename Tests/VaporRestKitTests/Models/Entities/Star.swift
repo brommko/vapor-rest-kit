@@ -65,7 +65,7 @@ final class Star: Model, Content {
 //MARK:- InitMigratableSchema
 
 extension Star: InitMigratableSchema {
-    static func prepare(on schemaBuilder: SchemaBuilder) -> EventLoopFuture<Void> {
+    static func prepare(on schemaBuilder: SchemaBuilder) async throw {
         return schemaBuilder
             .field(.id, .int, .identifier(auto: true))
             .field(Fields.title.key, .string, .required)

@@ -11,7 +11,7 @@ import Fluent
 public extension ResourceController {
     func getPage<Model>(
         req: Request,
-        queryModifier: QueryModifier<Model> = .empty) throws -> EventLoopFuture<Page<Output>>
+        queryModifier: QueryModifier<Model> = .empty) async throw -> Page<Output>
     where
         Output.Model == Model {
         
@@ -28,7 +28,7 @@ public extension RelatedResourceController {
         resolver: Resolver<RelatedModel> = .byIdKeys,
         req: Request,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) throws -> EventLoopFuture<Page<Output>>
+        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) async throw -> Page<Output>
     where
         Model == Output.Model {
         
@@ -44,7 +44,7 @@ public extension RelatedResourceController {
         resolver: Resolver<RelatedModel> = .byIdKeys,
         req: Request,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) throws -> EventLoopFuture<Page<Output>>
+        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) async throw -> Page<Output>
     where
         Model == Output.Model {
         
@@ -60,7 +60,7 @@ public extension RelatedResourceController {
         resolver: Resolver<RelatedModel> = .byIdKeys,
         req: Request,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) throws -> EventLoopFuture<Page<Output>>
+        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) async throw -> Page<Output>
     where
         Model == Output.Model {
         

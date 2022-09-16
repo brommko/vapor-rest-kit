@@ -13,7 +13,7 @@ import Fluent
 public typealias DeleteHandler = Deleter
 
 public struct Deleter<Model: Fluent.Model> {
-    public typealias Handler = (Model, Bool, Request, Database) -> EventLoopFuture<Model>
+    public typealias Handler = (Model, Bool, Request, Database) -> Model
 
     private let handler: Handler
     private let useForcedDelete: Bool
@@ -27,14 +27,14 @@ public struct Deleter<Model: Fluent.Model> {
     public static func defaultDeleteHandler(_ model: Model,
                                             forceDelete: Bool,
                                             req: Request,
-                                            db: Database) -> EventLoopFuture<Model> {
+                                            db: Database) -> Model {
 
         model.delete(force: forceDelete, on: db).transform(to: model)
     }
 
     func performDelete(_ model: Model,
                        req: Request,
-                       database: Database) -> EventLoopFuture<Model> {
+                       database: Database) -> Model {
 
         handler(model, useForcedDelete, req, database)
     }

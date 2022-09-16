@@ -26,17 +26,17 @@ public struct Migrating<T: Model> {
     }
 }
 
-extension Migrating: Migration {
-    public func prepare(on database: Database) -> EventLoopFuture<Void> {
+extension Migrating: AsyncMigration {
+    public func prepare(on database: Database) async throws {
         prepareClosure(database)
     }
 
-    public func revert(on database: Database) -> EventLoopFuture<Void> {
+    public func revert(on database: Database) async throws {
         revertClosure(database)
     }
 }
 
-public extension Migrating {
+public extension AsyncMigration {
     static func createInitialMigration(
         with prepare: @escaping MigratingClosure,
         revert: @escaping MigratingClosure = { db in db.schema(T.schema).delete() }) -> Migrating {

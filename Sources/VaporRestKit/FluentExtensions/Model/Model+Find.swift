@@ -10,8 +10,8 @@ import Fluent
 
 extension Model where IDValue: LosslessStringConvertible {
     static func findByIdKey(_ req: Request,
-                            database: Database) throws -> EventLoopFuture<Self> {
-        try findByIdKey(
+                            database: Database) async throws -> Self {
+        try await findByIdKey(
             req,
             database: database,
             queryModifier: .empty)
@@ -19,8 +19,8 @@ extension Model where IDValue: LosslessStringConvertible {
 
     static func findByIdKey(_ req: Request,
                             database: Database,
-                            queryModifier: QueryModifier<Self>) throws -> EventLoopFuture<Self> {
-        try Self.query(on: database)
+                            queryModifier: QueryModifier<Self>) async throws -> Self {
+        try await Self.query(on: database)
             .with(queryModifier, for: req)
             .find(by: idKey, from: req)
     }
@@ -28,10 +28,10 @@ extension Model where IDValue: LosslessStringConvertible {
 
 extension Model where Self: Authenticatable {
     static func requireAuth(_ req: Request,
-                            database: Database) throws -> EventLoopFuture<Self>  {
+                            database: Database) throws -> Self  {
 
         let related = try req.auth.require(Self.self)
-        return req.eventLoop.makeSucceededFuture(related)
+        return related
     }
 }
 
@@ -42,23 +42,21 @@ extension Model where IDValue: LosslessStringConvertible {
         _ req: Request,
         database: Database,
         childrenKeyPath: ChildrenKeyPath<RelatedModel, Self>,
-        queryModifier: QueryModifier<Self>) throws -> EventLoopFuture<(Self, RelatedModel)>
+        queryModifier: QueryModifier<Self>) async throws -> (Self, RelatedModel)
 
     where
         RelatedModel: Fluent.Model,
         RelatedModel.IDValue: LosslessStringConvertible {
 
-        try RelatedModel
+        var related = try RelatedModel
             .query(on: database)
             .find(by: RelatedModel.idKey, from: req)
-            .flatMapThrowing { related in
-                try related
-                    .queryRelated(keyPath: childrenKeyPath, on: database)
-                    .with(queryModifier, for: req)
-                    .find(by: idKey, from: req)
-                    .and(value: related)
-            }
-            .flatMap { $0 }
+            
+            try await related
+                .queryRelated(keyPath: childrenKeyPath, on: database)
+                .with(queryModifier, for: req)
+                .find(by: idKey, from: req)
+                .and(value: related)
     }
 
     static func findByIdKeyAndAuthRelated<RelatedModel>(

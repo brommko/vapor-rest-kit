@@ -78,18 +78,15 @@ extension Model {
                                with childrenKeyPath: SiblingKeyPath<Self, To, Through>,
                                on database: Database,
                                method: SiblingsProperty<Self, To, Through>.AttachMethod = .ifNotExists,
-                               edit: @escaping (Through) -> () = { _ in }) -> EventLoopFuture<Self> {
+                               edit: @escaping (Through) -> () = { _ in }) async throws -> Self {
 
         return self[keyPath: childrenKeyPath].attach(child, method: method, on: database, edit)
-            .transform(to: self)
-
     }
 
     @discardableResult
     func detached<To, Through>(from child: To,
-                               with childrenKeyPath: SiblingKeyPath<Self, To, Through>, on database: Database) -> EventLoopFuture<Self> {
+                               with childrenKeyPath: SiblingKeyPath<Self, To, Through>, on database: Database) -> Self {
         return self[keyPath: childrenKeyPath].detach(child, on: database)
-            .transform(to: self)
     }
 
     @discardableResult
@@ -97,18 +94,16 @@ extension Model {
                                  with siblingKeyPath: SiblingKeyPath<From, Self, Through>,
                                  on database: Database,
                                  method: SiblingsProperty<From, Self, Through>.AttachMethod = .ifNotExists,
-                                 edit: @escaping (Through) -> () = { _ in }) -> EventLoopFuture<Self> {
+                                 edit: @escaping (Through) -> () = { _ in }) -> Self {
 
         return parent[keyPath: siblingKeyPath].attach(self, method: method, on: database, edit)
-            .transform(to: self)
     }
     @discardableResult
     func detached<From, Through>(from parent: From,
                                  with siblingKeyPath: SiblingKeyPath<From, Self, Through>,
-                                 on database: Database) -> EventLoopFuture<Self> {
+                                 on database: Database) -> Self {
 
         return parent[keyPath: siblingKeyPath].detach(self, on: database)
-            .transform(to: self)
     }
 
     @discardableResult

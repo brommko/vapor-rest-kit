@@ -15,7 +15,7 @@ public extension RelationsController {
         req: Request,
         willAttach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) async throw -> Output
     where
         Model == Output.Model {
         
@@ -40,7 +40,7 @@ public extension RelationsController {
         req: Request,
         willAttach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) async throw -> Output
     where
         Model == Output.Model {
         
@@ -66,7 +66,7 @@ public extension RelationsController {
         req: Request,
         willAttach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) throws -> EventLoopFuture<Output>
+        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) async throw -> Output
     where
         Model == Output.Model {
         

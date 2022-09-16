@@ -12,7 +12,7 @@ public extension ResourceController {
     func delete<Model>(
         req: Request,
         using deleter: Deleter<Model> = .defaultDeleter(),
-        queryModifier: QueryModifier<Model> = .empty) throws -> EventLoopFuture<Output>
+        queryModifier: QueryModifier<Model> = .empty) async throws -> Output
     where
         Output.Model == Model {
 
@@ -36,7 +36,7 @@ public extension RelatedResourceController {
         using deleter: Deleter<Model> = .defaultDeleter(),
         willDetach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) async throws -> Output
     where
         Model == Output.Model {
 
@@ -62,7 +62,7 @@ public extension RelatedResourceController {
         using deleter: Deleter<Model> = .defaultDeleter(),
         willDetach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) async throws -> Output
     where
         Model == Output.Model {
 
@@ -74,7 +74,7 @@ public extension RelatedResourceController {
                                                                         relatedModel: related,
                                                                         req: req,
                                                                         database: db) }
-                .flatMapThrowing { (model, related) in
+                .flatMapThrowing { (model, related) -> <#Result#> in
                     try model.detached(from: related, with: relationKeyPath)
                     return related.save(on: db).transform(to: model) }
                 .flatMap { $0 }
@@ -92,7 +92,7 @@ public extension RelatedResourceController {
         using deleter: Deleter<Model> = .defaultDeleter(),
         willDetach middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model> = .empty,
-        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) throws -> EventLoopFuture<Output>
+        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) async throws -> Output
     where
 
         Model == Output.Model {

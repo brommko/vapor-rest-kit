@@ -12,7 +12,7 @@ extension ResourceController {
     func mutate<Input, Model>(
         req: Request,
         using: Input.Type,
-        queryModifier: QueryModifier<Model>) throws -> EventLoopFuture<Output>
+        queryModifier: QueryModifier<Model>) async throw -> Output
     where
         Input: ResourceMutationModel,
         Output.Model == Model,
@@ -39,7 +39,7 @@ extension RelatedResourceController {
         using: Input.Type,
         willSave middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model>,
-        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<RelatedModel, Model>) async throw -> Output
     where
         Input: ResourceMutationModel,
         Model == Output.Model,
@@ -68,7 +68,7 @@ extension RelatedResourceController {
         using: Input.Type,
         willSave middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model>,
-        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) throws -> EventLoopFuture<Output>
+        relationKeyPath: ChildrenKeyPath<Model, RelatedModel>) async throw -> Output
     where
         Input: ResourceMutationModel,
         Model == Output.Model,
@@ -102,7 +102,7 @@ extension RelatedResourceController {
         using: Input.Type,
         willSave middleware: ControllerMiddleware<Model, RelatedModel> = .empty,
         queryModifier: QueryModifier<Model>,
-        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) throws -> EventLoopFuture<Output>
+        relationKeyPath: SiblingKeyPath<RelatedModel, Model, Through>) async throw -> Output
     where
         Input: ResourceMutationModel,
         Model == Output.Model,

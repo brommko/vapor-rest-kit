@@ -11,11 +11,11 @@ import Fluent
 public protocol ResourcePatchModel: ResourceMutationModel {
     func patch(_: Model) throws -> Model
 
-    func patch(_ model: Model, req: Request, database: Database) -> EventLoopFuture<Model>
+    func patch(_ model: Model, req: Request, database: Database) -> Model
 }
 
 public extension ResourcePatchModel {
-    func patch(_ model: Model, req: Request, database: Database) -> EventLoopFuture<Model> {
+    func patch(_ model: Model, req: Request, database: Database) -> Model {
         return req.eventLoop.tryFuture { try patch(model) }
     }
 }
@@ -25,7 +25,7 @@ public extension ResourcePatchModel {
         try patch(model)
     }
 
-    func mutate(_ model: Model, req: Request, database: Database) -> EventLoopFuture<Model> {
+    func mutate(_ model: Model, req: Request, database: Database) -> Model {
         patch(model, req: req, database: database)
     }
 }

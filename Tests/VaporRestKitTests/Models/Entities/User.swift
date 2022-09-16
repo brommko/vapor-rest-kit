@@ -51,7 +51,7 @@ final class User: Model, Content {
 //MARK:- InitMigratableSchema
 
 extension User: InitMigratableSchema {
-    static func prepare(on schemaBuilder: SchemaBuilder) -> EventLoopFuture<Void> {
+    static func prepare(on schemaBuilder: SchemaBuilder) async throw {
         return schemaBuilder
             .field(.id, .int, .identifier(auto: true))
             .field(Fields.username.key, .string, .required)
