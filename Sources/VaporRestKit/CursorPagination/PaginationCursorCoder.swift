@@ -87,6 +87,8 @@ extension DatabaseQuery.Field {
             return "\(schema)_\(keys)"
         case .custom(_):
             throw Abort(.unprocessableEntity, reason: "Custom Field is not compatible with cursor pagination")
+        case .extendedPath(_, schema: let schema, space: let space):
+            throw Abort(.unprocessableEntity, reason: "Extended path \(schema) \(String(describing: space))")
         }
     }
 
@@ -96,6 +98,8 @@ extension DatabaseQuery.Field {
             return  (fieldKeys: keys, schema: schema)
         case .custom(_):
             throw Abort(.unprocessableEntity, reason: "Custom Field is not compatible with cursor pagination")
+        case .extendedPath(_, schema: let schema, space: let space):
+            throw Abort(.unprocessableEntity, reason: "Extended path \(schema) \(String(describing: space))")
         }
     }
 }
